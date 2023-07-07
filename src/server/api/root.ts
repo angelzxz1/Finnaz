@@ -1,5 +1,6 @@
-import { exampleRouter } from "Finnaz/server/api/routers/example";
-import { createTRPCRouter } from "Finnaz/server/api/trpc";
+import { purchaseRouter } from 'Finnaz/server/api/routers/purchase';
+import { usersRouter } from 'Finnaz/server/api/routers/users';
+import { createTRPCRouter } from 'Finnaz/server/api/trpc';
 
 /**
  * This is the primary router for your server.
@@ -7,7 +8,8 @@ import { createTRPCRouter } from "Finnaz/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  example: exampleRouter,
+	users: usersRouter,
+	purchase: purchaseRouter
 });
 
 // export type definition of API
