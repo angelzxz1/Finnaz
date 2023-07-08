@@ -46,5 +46,13 @@ export const purchaseRouter = createTRPCRouter({
 					descripcion: input.descripcion
 				}
 			});
-		})
+		}),
+	updatePurchase: protectedProcedure
+		.input(z.object({ id: z.string(), amount: z.bigint() }))
+		.mutation(({ ctx, input }) => {
+			return ctx.prisma.purchase.update({ where: { id: input.id }, data: { amount: input.amount } });
+		}),
+	deletePurchase: protectedProcedure.input(z.object({ id: z.string() })).mutation(({ ctx, input }) => {
+		return ctx.prisma.purchase.delete({ where: { id: input.id } });
+	})
 });

@@ -47,6 +47,8 @@ model User {
     accounts      Account[]
     sessions      Session[]
     transactions  Purchase[]
+    monthlyLimit  Int?
+    monthlySpent  Int?
 }
 
 model VerificationToken {
@@ -61,7 +63,7 @@ model Purchase {
     id          String   @id @unique @default(cuid())
     user        User     @relation(fields: [userId], references: [id])
     userId      String
-    amount      BigInt
+    amount      Int
     date        DateTime
     descripcion String?
     subcripcion Boolean

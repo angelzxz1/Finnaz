@@ -10,6 +10,8 @@ export interface UsersState {
 	image: string;
 	alreadyLoggedIn?: boolean;
 	status: 'authenticated' | 'loading' | 'unauthenticated';
+	monthlyLimit: number;
+	monthlySpent: number;
 }
 const initialState: UsersState = {
 	id: '',
@@ -18,7 +20,9 @@ const initialState: UsersState = {
 	emailVerified: null,
 	image: '',
 	alreadyLoggedIn: false,
-	status: 'loading'
+	status: 'loading',
+	monthlyLimit: 0,
+	monthlySpent: 0
 };
 
 export const userSlice = createSlice({
@@ -33,6 +37,8 @@ export const userSlice = createSlice({
 			state.image = action.payload.image;
 			state.alreadyLoggedIn = true;
 			state.status = 'authenticated';
+			state.monthlyLimit = action.payload.monthlyLimit;
+			state.monthlySpent = action.payload.monthlySpent;
 		},
 		clearUser: state => {
 			state.id = '';
@@ -42,10 +48,21 @@ export const userSlice = createSlice({
 			state.image = '';
 			state.alreadyLoggedIn = false;
 			state.status = 'unauthenticated';
+			state.monthlyLimit = 0;
+			state.monthlySpent = 0;
+		},
+		setLimit: (state, action: PayloadAction<number>) => {
+			state.monthlyLimit = action.payload;
+		},
+		setBalance: (state, action: PayloadAction<number>) => {
+			state.monthlySpent = action.payload;
+		},
+		addBalance: (state, action: PayloadAction<number>) => {
+			state.monthlySpent += action.payload;
 		}
 	}
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setLimit, setBalance, addBalance } = userSlice.actions;
 
 export default userSlice.reducer;
