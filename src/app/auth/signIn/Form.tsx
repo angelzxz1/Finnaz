@@ -17,10 +17,11 @@ export interface provider {
 	callbackUrl: string;
 }
 type ButtonProps = {
-	provider: provider;
+	id:string,
+	name:string
 	Icon: React.JSX.Element;
 };
-const Button = ({ provider, Icon }: ButtonProps) => {
+const Button = ({ id, name, Icon }: ButtonProps) => {
 	const { id, name } = provider;
 	return (
 		<button
@@ -88,28 +89,12 @@ const Form = () => {
 				</a>
 				<button className="form-submit-button">Login</button>
 				<span className="my-8 flex w-full justify-center text-sm text-[#7B7979]">or</span>
-				{providers.map((provider, index) => {
-					switch (provider.id) {
-						case 'google':
-							return (
-								<Button
-									provider={provider}
-									Icon={<IconBrandGoogle className="absolute left-2 top-2" />}
-									key={index}
-								/>
-							);
-						case 'github':
-							return (
-								<Button
-									provider={provider}
-									Icon={<IconBrandGithub className="absolute left-2 top-2" />}
-									key={index}
-								/>
-							);
-						default:
-							return null;
-					}
-				})}
+				<Button
+					id={'github'}
+					name={"GitHub"}
+					Icon={<IconBrandGoogle className="absolute left-2 top-2" />}
+					key={'github'}
+				/>
 				<div className="form-signin-login-box">
 					You don’t have an account yet?
 					<a href="/register" className="redirect-link">

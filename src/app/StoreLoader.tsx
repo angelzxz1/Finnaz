@@ -39,7 +39,11 @@ const StoreLoader = ({ children }: { children: ReactNode }) => {
 	const { data: sessionData, status } = useSession();
 
 	if (user.alreadyLoggedIn) {
-		console.log('already logged in');
+		return (
+			<LimitLoader userId={user.id}>
+				<PurchasesLoader userId={user.id}>{children}</PurchasesLoader>
+			</LimitLoader>
+		);
 	} else {
 		if (status === 'authenticated' && sessionData) {
 			const { user } = sessionData;
@@ -56,16 +60,16 @@ const StoreLoader = ({ children }: { children: ReactNode }) => {
 					monthlySpent: 0
 				})
 			);
+			return (
+				<LimitLoader userId={user.id}>
+					<PurchasesLoader userId={user.id}>{children}</PurchasesLoader>
+				</LimitLoader>
+			);
 		} else {
 			dispatch(clearUser());
+			return <>{children}</>;
 		}
 	}
-
-	return (
-		<LimitLoader userId={user.id}>
-			<PurchasesLoader userId={user.id}>{children}</PurchasesLoader>
-		</LimitLoader>
-	);
 };
 
 export default StoreLoader;
