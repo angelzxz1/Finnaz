@@ -18,9 +18,14 @@ export default function RootLayout({ children }: Props) {
 	return (
 		<html lang="en">
 			<Providers>
-				<body className={`${inter.className} bg-gradient-to-br from-[#292929] to-black text-white`}>
+				<body
+					className={`${inter.className} min-h-screen bg-gradient-to-br from-[#1D0E29] to-black text-white`}
+				>
 					<NavBar />
-					<div className="flex h-screen w-full items-center justify-center pt-[2.25rem]">{children}</div>
+
+					<div className="flex w-full justify-center pt-[37px]">
+						<div className="w-full ">{children}</div>
+					</div>
 				</body>
 			</Providers>
 		</html>

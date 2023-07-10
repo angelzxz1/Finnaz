@@ -28,7 +28,7 @@ export const purchaseRouter = createTRPCRouter({
 				day: z.string(),
 				month: z.string(),
 				year: z.string(),
-				amount: z.bigint(),
+				amount: z.number(),
 				subcripcion: z.boolean(),
 				descripcion: z.string()
 			})
@@ -48,7 +48,7 @@ export const purchaseRouter = createTRPCRouter({
 			});
 		}),
 	updatePurchase: protectedProcedure
-		.input(z.object({ id: z.string(), amount: z.bigint() }))
+		.input(z.object({ id: z.string(), amount: z.number() }))
 		.mutation(({ ctx, input }) => {
 			return ctx.prisma.purchase.update({ where: { id: input.id }, data: { amount: input.amount } });
 		}),

@@ -41,7 +41,7 @@ const AddPurchase = ({ userId }: AddPurchaseProps) => {
 				onClick={() => {
 					mutate({
 						userId: userId,
-						amount: BigInt(25000),
+						amount: 25000,
 						date: new Date(),
 						day: 'Viernes',
 						month: 'Julio',
@@ -102,24 +102,11 @@ const PurchaseItem = ({ purchase }: { purchase: Purchase }) => {
 };
 
 const PurchaseList = ({ userId }: AddPurchaseProps) => {
-	const dispatch = useDispatch();
-	const { data: purchaseData, status: purchaseStatus } = api.purchase.getPurchaseByUser.useQuery({
-		userId: userId
-	});
-	useEffect(() => {
-		if (purchaseData) {
-			dispatch(setPurchases(purchaseData));
-		}
-	}, [purchaseData]);
-	const { purchases: purchaseList } = useSelector((state: RootState) => state.purchases);
+	const { purchases } = useSelector((state: RootState) => state.purchases);
 
-	if (purchaseStatus === 'loading') {
-		return <div>Loading...</div>;
-	}
-	if (purchaseStatus === 'error') return <div>Error</div>;
 	return (
 		<div>
-			{purchaseList.map(purchase => (
+			{purchases.map((purchase: Purchase) => (
 				<PurchaseItem purchase={purchase} key={purchase.id} />
 			))}
 		</div>

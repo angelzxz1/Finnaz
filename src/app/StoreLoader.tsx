@@ -7,14 +7,24 @@ import type { ReactNode } from 'react';
 import { api } from 'Finnaz/utils/api';
 import { useSelector, useDispatch } from 'react-redux';
 
-const InfoLoader = ({ userId, children }: { userId: string; children: ReactNode }) => {
+const PurchasesLoader = ({ userId, children }: { userId: string; children: ReactNode }) => {
+	const dispatch = useDispatch();
+	const { data: purchaseData, isSuccess } = api.purchase.getPurchaseByUser.useQuery({
+		userId: userId
+	});
+	console.log(purchaseData);
+	console.log(isSuccess);
+	if (isSuccess && purchaseData) {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+		dispatch(setPurchases(purchaseData));
+	}
+	return <>{children}</>;
+};
+const LimitLoader = ({ userId, children }: { userId: string; children: ReactNode }) => {
 	const dispatch = useDispatch();
 	const { data: userInfo, isSuccess } = api.users.getUser.useQuery({ id: userId });
-	console.log(userInfo);
-	console.log(isSuccess);
 	if (isSuccess && userInfo) {
 		const { monthlyLimit, monthlySpent } = userInfo;
-		console.log(monthlyLimit, monthlySpent);
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		dispatch(setLimit(monthlyLimit ? monthlyLimit : 0));
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -51,7 +61,11 @@ const StoreLoader = ({ children }: { children: ReactNode }) => {
 		}
 	}
 
-	return <InfoLoader userId={user.id}>{children}</InfoLoader>;
+	return (
+		<LimitLoader userId={user.id}>
+			<PurchasesLoader userId={user.id}>{children}</PurchasesLoader>
+		</LimitLoader>
+	);
 };
 
 export default StoreLoader;

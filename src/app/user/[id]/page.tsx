@@ -4,21 +4,31 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { api } from 'Finnaz/utils/api';
+import { useSelector } from 'react-redux';
+import { RootState } from 'Finnaz/utils/store';
+import Overview from './overview';
 
 type MainBodyProps = {
 	id: string;
 };
 const MainBody = ({ id }: MainBodyProps) => {
-	const { data, isLoading: purchaseLoading } = api.purchase.getPurchaseByUser.useQuery({ userId: id });
-	// const constraintsRef = useRef(null);
-	const [list, setList] = useState<Purchase[]>([]);
-	useEffect(() => {
-		setList(data ? [...data] : []);
-	}, [data]);
-	if (purchaseLoading) {
-		return <div className="flex grow">Loading...</div>;
-	}
-	return <div>This is the user</div>;
+	// const user = useSelector((state: RootState) => state.user);
+	// const { purchases } = useSelector((state: RootState) => state.purchases);
+	// useEffect(() => {
+	// 	console.log(purchases);
+	// }, [user, purchases]);
+	// return (
+	// 	<div>
+	// 		{purchases.map(purchase => (
+	// 			<div key={purchase.id}>{purchase.id}</div>
+	// 		))}
+	// 	</div>
+	// );
+	return (
+		<main className="w-full">
+			<Overview />
+		</main>
+	);
 };
 
 const Page = ({ params }: { params: { id: string } }) => {

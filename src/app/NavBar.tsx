@@ -7,6 +7,36 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from 'Finnaz/utils/store';
 import { setUser, clearUser } from 'Finnaz/slices/user/userSlice';
+import { usePathname } from 'next/navigation';
+
+type NavLinkProps = {
+	href: string;
+	children: React.ReactNode;
+};
+const NavLink = ({ href, children }: NavLinkProps) => {
+	const path = usePathname();
+	return (
+		<Link
+			href={href}
+			className={`
+				relative
+				mr-4
+                pr-4
+                after:absolute
+                after:left-0
+                after:h-px
+                after:bg-white
+                after:content-['']
+                ${path === href ? 'after:w-full' : 'after:w-0 hover:after:w-full'}
+                after:bottom-0
+                after:duration-150
+                after:ease-in-out
+            `}
+		>
+			{children}
+		</Link>
+	);
+};
 
 const LoadingButton = () => {
 	return (
@@ -28,9 +58,17 @@ const NavBar = (): React.JSX.Element => {
 	const user = useSelector((state: RootState) => state.user);
 	const dispatch = useDispatch();
 	const { email, emailVerified, id, image, name, alreadyLoggedIn, status } = user;
+	const Links = [
+		{ href: '/', label: 'Home' },
+		{ href: '/add', label: 'Add' },
+		{ href: '/history', label: 'History' },
+		{ href: '/about', label: 'About' },
+		{ href: '/contactus', label: 'Contact us' },
+		{ href: '/testing', label: 'Testing' }
+	];
 	if (status === 'loading') {
 		return (
-			<nav className="fixed flex w-full items-center justify-between bg-[#250e4785] leading-none backdrop-blur-[8px]">
+			<nav className="fixed flex w-full items-center justify-between border-b border-[#8b8b8b93] bg-[#250e4785] leading-none backdrop-blur-[8px]">
 				<div className="w-1/5 ">
 					<h1 className="ml-8 text-xl">
 						<></>
@@ -46,7 +84,7 @@ const NavBar = (): React.JSX.Element => {
 		);
 	} else if (!alreadyLoggedIn) {
 		return (
-			<nav className="fixed flex w-full items-center justify-between bg-[#250e4785] leading-none backdrop-blur-[8px]">
+			<nav className="fixed flex w-full items-center justify-between border-b border-[#8b8b8b93] bg-[#250e4785] leading-none backdrop-blur-[8px]">
 				<div className="w-1/5 ">
 					<h1 className="ml-8 text-xl">
 						<></>
@@ -72,24 +110,22 @@ const NavBar = (): React.JSX.Element => {
 		);
 	} else {
 		return (
-			<nav className="fixed flex w-full items-center justify-between bg-[#250e4785] leading-none backdrop-blur-[8px]">
+			<nav className="fixed flex w-full items-center justify-between border-b border-[#8b8b8b93] bg-[#250e4785] leading-none backdrop-blur-[8px]">
 				<div className="w-1/5 ">
 					<h1 className="ml-8 text-xl">
 						<Link href={`/user/${id}`}> {name} </Link>
 					</h1>
 				</div>
 				<div className="w-3/5 ">
-					<Link className="mr-2" href="/">
-						Home
-					</Link>
-					<Link className="mr-2" href="/testing">
-						Testing
-					</Link>
+					{Links.map(({ href, label }) => (
+						<NavLink key={label} href={href}>
+							{label}
+						</NavLink>
+					))}
 				</div>
 				<div className="flex w-1/5 justify-end ">
 					<button className="mr-8" onClick={() => void signOut()}>
 						<div className="flex items-center">
-							<div className="mr-2">Sign Out</div>
 							<IconLogout size="2.25rem" />
 						</div>
 					</button>
