@@ -22,7 +22,6 @@ type ButtonProps = {
 	Icon: React.JSX.Element;
 };
 const Button = ({ id, name, Icon }: ButtonProps) => {
-	const { id, name } = provider;
 	return (
 		<button
 			className="relative w-full rounded-md bg-white p-2 text-[#A1A1A1] hover:bg-[#f5f5f5]"
